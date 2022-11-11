@@ -14,5 +14,5 @@ write fact { output factorial of x
 }
 end """
 
-
+print(Scanner.Scanner.generate_tokens(str))
 
