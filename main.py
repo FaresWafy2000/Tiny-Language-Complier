@@ -1,5 +1,5 @@
 import Scanner
-
+# sample file
 str = """{ Sample program in TINY language –
 computes factorial}
 read x; {input an integer }
