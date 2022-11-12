@@ -18,6 +18,10 @@ class Scanner :
         str = ""
         list = []
         input_string = Scanner.remove_comments(input_string)
+        input_string = input_string.replace(";"," ; ")
+        input_string = input_string.replace("(", " ( ")
+        input_string = input_string.replace(")", " ) ")
+
         items_list = input_string.split()
         for i in range(len(items_list)):
             if items_list[i] in Scanner.token_value:
@@ -26,7 +30,7 @@ class Scanner :
                 list.append(Scanner.token_type[index_item])
                 list.append(Scanner.token_value[index_item])
             else:
-                special_items = (items_list[i]).replace(';', '')
+                special_items = items_list[i]
                 if special_items.isnumeric():
                     str += f'{special_items},{"NUMBER"} \n'
                     list.append('NUMBER')
@@ -46,7 +50,7 @@ class Scanner :
 
     @staticmethod
     def remove_comments(input_string):
-        input_string = input_string.strip()
+        #input_string = input_string.strip()
         for i in range (len(input_string)):
             if i < len(input_string):
                 if input_string[i] == '{' :
