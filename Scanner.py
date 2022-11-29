@@ -18,10 +18,7 @@ class Scanner :
         str = ""
         list = []
         input_string = Scanner.remove_comments(input_string)
-        input_string = input_string.replace(";"," ; ")
-        input_string = input_string.replace("(", " ( ")
-        input_string = input_string.replace(")", " ) ")
-
+        input_string = Scanner.space_maker(input_string)
         items_list = input_string.split()
         for i in range(len(items_list)):
             if items_list[i] in Scanner.token_value:
@@ -37,13 +34,12 @@ class Scanner :
                     list.append(special_items)
 
                 else:
+                    if not special_items.isalpha() :
+                        print(f"{special_items} IS NOT VALID IDENTIFER")
                     str += f'{special_items},{"IDENTIFIER"} \n'
                     list.append('IDENTIFIER')
                     list.append(special_items)
-                if ';' in items_list[i]:
-                    str += f';,{"SEMICOLON"} \n'
-                    list.append('SEMICOLON')
-                    list.append(';')
+
 
         Scanner.write_file(str)
 
@@ -61,10 +57,36 @@ class Scanner :
         return input_string
 
     @staticmethod
+    def space_maker(input_string):
+        for i in range(len(Scanner.token_value)):
+            if (i == 6 or i == len(Scanner.token_value) - 1):
+                continue
+            if (Scanner.token_value[i] == ":="):
+                input_string = input_string.replace(f"{Scanner.token_value[i]}", " %% ")
+            input_string = input_string.replace(f"{Scanner.token_value[i]}", f" {Scanner.token_value[i]} ")
+        input_string = input_string.replace("%%", " := ")
+        return input_string
+    @staticmethod
+    def read_file(str):
+        try:
+            # open text file in read mode
+            text_file = open(f"{str}", "r")
+            # read whole file to a string
+            data = text_file.read()
+            # close file
+            text_file.close()
+            return data
+        except :
+            print("File Not Found")
+            inp = input("Please Try again ")
+            Scanner.read_file(inp)
+
+    @staticmethod
     def write_file (input_string):
         if os.path.isfile("output.txt"):
             os.remove("output.txt")
         f = open("output.txt", "w")
+        print("Output file is successfully generated ")
         f.write(input_string)
 
 
