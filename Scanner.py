@@ -36,6 +36,10 @@ class Scanner :
                 else:
                     if not special_items.isalpha() :
                         print(f"{special_items} IS NOT VALID IDENTIFER")
+                        str += f'{special_items},{"NOT VALID IDENTIFIER"} \n'
+                        list.append(-1)
+                        list.append(special_items)
+
                     str += f'{special_items},{"IDENTIFIER"} \n'
                     list.append('IDENTIFIER')
                     list.append(special_items)
