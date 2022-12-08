@@ -4,19 +4,20 @@ import os.path
 class Scanner :
     token_type = ['SEMICOLON', 'IF', 'THEN', 'END', 'REPEAT',
                 'UNTIL', 'IDENTIFIER', 'ASSIGN', 'READ',
-                'WRITE', 'LESSTHAN', 'EQUAL', 'PLUS', 'MINUS',
+                'WRITE', 'LESSTHAN','GREATERTHAN', 'EQUAL', 'PLUS', 'MINUS',
                 'MULT', 'DIV', 'OPENBRACKET', 'CLOSEDBRACKET', 'NUMBER'
                 ]
     token_value = [';', 'if', 'then', 'end', 'repeat',
                 'until', -1 , ':=', 'read',
-                'write', '<', '=', '+', '-',
+                'write', '<', '>','=', '+', '-',
                 '*', '/', '(', ')', -1
                 ]
 
     @staticmethod
     def generate_tokens(input_string):
         str = ""
-        list = []
+        token_type_list = []
+        token_value_list = []
         input_string = Scanner.remove_comments(input_string)
         input_string = Scanner.space_maker(input_string)
         items_list = input_string.split()
@@ -24,29 +25,32 @@ class Scanner :
             if items_list[i] in Scanner.token_value:
                 index_item = Scanner.token_value.index(items_list[i])
                 str += f'{Scanner.token_value[index_item]},{Scanner.token_type[index_item]} \n'
-                list.append(Scanner.token_type[index_item])
-                list.append(Scanner.token_value[index_item])
+                token_type_list.append(Scanner.token_type[index_item])
+                token_value_list.append(Scanner.token_value[index_item])
             else:
                 special_items = items_list[i]
                 if special_items.isnumeric():
                     str += f'{special_items},{"NUMBER"} \n'
-                    list.append('NUMBER')
-                    list.append(special_items)
+                    token_type_list.append('NUMBER')
+                    token_value_list.append(special_items)
 
                 else:
                     if not special_items.isalpha() :
                         print(f"{special_items} IS NOT VALID TOKEN")
                         str += f'{special_items},{"NOT VALID TOKEN"} \n'
-                        list.append(-1)
-                        list.append(special_items)
+                        token_type_list.append(-1)
+                        token_value_list.append(special_items)
                         continue
 
                     str += f'{special_items},{"IDENTIFIER"} \n'
-                    list.append('IDENTIFIER')
-                    list.append(special_items)
+                    token_type_list.append('IDENTIFIER')
+                    token_value_list.append(special_items)
 
 
         Scanner.write_file(str)
+        return token_type_list,token_value_list
+
+
 
 
     @staticmethod
@@ -72,19 +76,28 @@ class Scanner :
         input_string = input_string.replace("%%", " := ")
         return input_string
     @staticmethod
-    def read_file(str):
-        try:
-            # open text file in read mode
-            text_file = open(f"{str}", "r")
-            # read whole file to a string
-            data = text_file.read()
-            # close file
-            text_file.close()
-            return data
-        except :
-            print("File Not Found")
-            inp = input("Please Try again ")
-            Scanner.read_file(inp)
+    def read_file(str=None):
+
+        text_file = open("input_file", "r")
+        # read whole file to a string
+        data = text_file.read()
+        # close file
+        text_file.close()
+        return data
+
+        # try:
+        #     # open text file in read mode
+        #     text_file = open(f"{str}", "r")
+        #     # read whole file to a string
+        #     data = text_file.read()
+        #     # close file
+        #     text_file.close()
+        #     return data
+        # except :
+        #     print("File Not Found")
+        #     inp = input("Please Try again ")
+        #     Scanner.read_file(inp)
+
 
     @staticmethod
     def write_file (input_string):
