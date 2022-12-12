@@ -1,10 +1,12 @@
 import os.path
 
+from Parser import Parser
 
-class Scanner :
+
+class Scanner:
     token_type = ['SEMICOLON', 'IF', 'THEN', 'END', 'REPEAT',
                 'UNTIL', 'IDENTIFIER', 'ASSIGN', 'READ',
-                'WRITE', 'LESSTHAN','GREATERTHAN', 'EQUAL', 'PLUS', 'MINUS',
+                'WRITE', 'LESSTHAN', 'GREATERTHAN', 'EQUAL', 'PLUS', 'MINUS',
                 'MULT', 'DIV', 'OPENBRACKET', 'CLOSEDBRACKET', 'NUMBER'
                 ]
     token_value = [';', 'if', 'then', 'end', 'repeat',
@@ -15,9 +17,11 @@ class Scanner :
 
     @staticmethod
     def generate_tokens(input_string):
+        flag = False
         str = ""
         token_type_list = []
         token_value_list = []
+        error_list = []
         input_string = Scanner.remove_comments(input_string)
         input_string = Scanner.space_maker(input_string)
         items_list = input_string.split()
@@ -40,6 +44,8 @@ class Scanner :
                         str += f'{special_items},{"NOT VALID TOKEN"} \n'
                         token_type_list.append(-1)
                         token_value_list.append(special_items)
+                        error_list.append(special_items)
+                        flag = True
                         continue
 
                     str += f'{special_items},{"IDENTIFIER"} \n'
@@ -48,7 +54,7 @@ class Scanner :
 
 
         Scanner.write_file(str)
-        return token_type_list,token_value_list
+        return token_type_list,token_value_list,str,flag,error_list
 
 
 
